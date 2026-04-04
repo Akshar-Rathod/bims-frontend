@@ -27,10 +27,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { MoreHorizontal, ClipboardCheck, Trash2, Edit, Eye } from 'lucide-react'
+import { MoreHorizontal, ClipboardCheck, Edit, Eye } from 'lucide-react'
 import { useDCWR, DCWR } from '@/hooks/use-dcwr'
 import { DataTablePagination } from '@/components/data-table'
-import { showAlert } from '@/lib/swal'
 
 interface DCWRTableProps {
   filterStatus?: 'Unverified' | 'Verified'
@@ -45,14 +44,7 @@ export function DCWRTable({ filterStatus }: DCWRTableProps) {
     navigate({ to: `/dcwr/verify/${dcwr._id}` })
   }
 
-  const handleDelete = async (id: string) => {
-    try {
-      await deleteDCWR(id)
-      showAlert.success('DCWR deleted successfully')
-    } catch (error) {
-      showAlert.error('Failed to delete DCWR')
-    }
-  }
+
 
   const columns = useMemo<ColumnDef<DCWR>[]>(() => [
     {

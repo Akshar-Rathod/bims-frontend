@@ -10,34 +10,9 @@ import {
   getFilteredRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
-import { DataTablePagination } from '@/components/data-table'
-import { useBatteryTypes, BatteryType } from '@/hooks/use-battery-types'
 import { MoreHorizontal, Edit, Trash2, Plus } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
+import { showAlert } from '@/lib/swal'
+import { useBatteryTypes, BatteryType } from '@/hooks/use-battery-types'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -48,12 +23,43 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
+import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
-import { showAlert } from '@/lib/swal'
 import { Label } from '@/components/ui/label'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import { DataTablePagination } from '@/components/data-table'
 
 export function BatteryTypesTable() {
-  const { batteryTypes, deleteBatteryType, updateBatteryType, isLoading } = useBatteryTypes()
+  const {
+    batteryTypes,
+    addBatteryType,
+    deleteBatteryType,
+    updateBatteryType,
+    isLoading,
+  } = useBatteryTypes()
   const [rowSelection, setRowSelection] = useState({})
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [sorting, setSorting] = useState<SortingState>([])
@@ -112,48 +118,51 @@ export function BatteryTypesTable() {
     }
   }
 
-  const columns = useMemo<ColumnDef<BatteryType>[]>(() => [
-    {
-      accessorKey: 'id',
-      header: 'ID',
-    },
-    {
-      accessorKey: 'name',
-      header: 'Battery Type',
-    },
-    {
-      id: 'actions',
-      cell: ({ row }) => {
-        const item = row.original
-
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant='ghost' className='h-8 w-8 p-0'>
-                <span className='sr-only'>Open menu</span>
-                <MoreHorizontal className='h-4 w-4' />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align='end'>
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem onClick={() => handleEdit(item)}>
-                <Edit className='mr-2 h-4 w-4' />
-                Update
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                className='text-destructive'
-                onClick={() => handleDeleteClick(item)}
-              >
-                <Trash2 className='mr-2 h-4 w-4' />
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )
+  const columns = useMemo<ColumnDef<BatteryType>[]>(
+    () => [
+      {
+        accessorKey: 'id',
+        header: 'ID',
       },
-    },
-  ], [deleteBatteryType])
+      {
+        accessorKey: 'name',
+        header: 'Battery Type',
+      },
+      {
+        id: 'actions',
+        cell: ({ row }) => {
+          const item = row.original
+
+          return (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant='ghost' className='h-8 w-8 p-0'>
+                  <span className='sr-only'>Open menu</span>
+                  <MoreHorizontal className='h-4 w-4' />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align='end'>
+                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                <DropdownMenuItem onClick={() => handleEdit(item)}>
+                  <Edit className='mr-2 h-4 w-4' />
+                  Update
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  className='text-destructive'
+                  onClick={() => handleDeleteClick(item)}
+                >
+                  <Trash2 className='mr-2 h-4 w-4' />
+                  Delete
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )
+        },
+      },
+    ],
+    [deleteBatteryType]
+  )
 
   const table = useReactTable({
     data: batteryTypes,
@@ -175,7 +184,8 @@ export function BatteryTypesTable() {
     getPaginationRowModel: getPaginationRowModel(),
   })
 
-  if (isLoading) return <div className='p-4 text-center'>Loading battery types...</div>
+  if (isLoading)
+    return <div className='p-4 text-center'>Loading battery types...</div>
 
   return (
     <div className='flex flex-1 flex-col gap-4'>
@@ -269,7 +279,9 @@ export function BatteryTypesTable() {
             </div>
           </div>
           <DialogFooter>
-            <Button variant='outline' onClick={() => setIsAddDialogOpen(false)}>Cancel</Button>
+            <Button variant='outline' onClick={() => setIsAddDialogOpen(false)}>
+              Cancel
+            </Button>
             <Button onClick={onAdd}>Create Type</Button>
           </DialogFooter>
         </DialogContent>
@@ -298,26 +310,35 @@ export function BatteryTypesTable() {
             </div>
           </div>
           <DialogFooter>
-            <Button variant='outline' onClick={() => setIsEditDialogOpen(false)}>Cancel</Button>
+            <Button
+              variant='outline'
+              onClick={() => setIsEditDialogOpen(false)}
+            >
+              Cancel
+            </Button>
             <Button onClick={onUpdate}>Save Changes</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
       {/* Delete Confirmation */}
-      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+      <AlertDialog
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
               This action cannot be undone. This will permanently delete the
-              battery type "{selectedType?.name}" and remove its data from our servers.
+              battery type "{selectedType?.name}" and remove its data from our
+              servers.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
-              className='bg-destructive text-destructive-foreground hover:bg-destructive/90'
+              className='text-destructive-foreground bg-destructive hover:bg-destructive/90'
               onClick={onDelete}
             >
               Continue
@@ -328,4 +349,3 @@ export function BatteryTypesTable() {
     </div>
   )
 }
-
