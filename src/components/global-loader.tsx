@@ -3,10 +3,12 @@ import { Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 export function GlobalLoader() {
-  const isFetching = useIsFetching()
   const isMutating = useIsMutating()
+  const isInitialLoading = useIsFetching({
+    predicate: (query) => query.state.status === 'pending' && query.state.fetchStatus === 'fetching' && query.state.data === undefined
+  })
 
-  const isLoading = isFetching > 0 || isMutating > 0
+  const isLoading = isInitialLoading > 0 || isMutating > 0
 
   if (!isLoading) return null
 
