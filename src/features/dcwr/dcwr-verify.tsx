@@ -131,8 +131,16 @@ export default function DCWRVerify() {
                           <Input
                             type='number'
                             min={0}
-                            className='h-9 w-24 mx-auto text-center font-medium'
-                            {...register(`items.${index}.arrivedQuantity` as const, { valueAsNumber: true })}
+                            max={expected}
+                            className={cn(
+                              'h-9 w-24 mx-auto text-center font-medium',
+                              (useWatch({ control, name: `items.${index}.arrivedQuantity` }) > expected) && 'border-destructive text-destructive'
+                            )}
+                            {...register(`items.${index}.arrivedQuantity` as const, { 
+                              valueAsNumber: true,
+                              max: { value: expected, message: 'Cannot exceed expected quantity' },
+                              min: { value: 0, message: 'Cannot be negative' }
+                            })}
                           />
                         </TableCell>
                         <TableCell className='py-4 text-right'>
