@@ -11,6 +11,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -141,6 +142,12 @@ export default function DCWRVerify() {
                     )
                   })}
                 </TableBody>
+                <TableFooter>
+                  <TableRow className='bg-muted/50 font-bold'>
+                    <TableCell colSpan={2} className='py-4 text-lg'>Total</TableCell>
+                    <TableTotals control={control} fields={fields} />
+                  </TableRow>
+                </TableFooter>
               </Table>
 
               <div className='mt-8 flex justify-end space-x-4'>
@@ -172,4 +179,30 @@ function ArrivedDisplay({ control, index, expected }: { control: any, index: num
             {remaining < 0 ? 0 : remaining}
         </span>
     )
+}
+
+function TableTotals({ control, fields }: { control: any, fields: any[] }) {
+  const items = useWatch({
+    control,
+    name: 'items'
+  })
+
+  const totalExpected = fields.reduce((sum, f) => sum + (f.quantity || 0), 0)
+  const totalArrived = items?.reduce((sum: number, item: any) => sum + (Number(item?.arrivedQuantity) || 0), 0) || 0
+  const totalRemaining = totalExpected - totalArrived
+
+  return (
+    <>
+      <TableCell className='py-4 text-center text-xl'>{totalExpected}</TableCell>
+      <TableCell className='py-4 text-center text-xl'>{totalArrived}</TableCell>
+      <TableCell className='py-4 text-right'>
+        <span className={cn(
+          'text-xl font-bold transition-colors duration-200',
+          totalRemaining > 0 ? 'text-destructive' : 'text-green-600'
+        )}>
+          {totalRemaining < 0 ? 0 : totalRemaining}
+        </span>
+      </TableCell>
+    </>
+  )
 }

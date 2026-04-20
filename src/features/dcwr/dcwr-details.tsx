@@ -11,6 +11,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -126,6 +127,18 @@ export default function DCWRDetails() {
                     )
                   })}
                 </TableBody>
+                <TableFooter>
+                  <TableRow className='bg-muted/50 font-bold'>
+                    <TableCell colSpan={2}>Total</TableCell>
+                    <TableCell className='text-center'>
+                      {dcwr.items.reduce((sum, item) => sum + (item.quantity || 0), 0)}
+                    </TableCell>
+                    <TableCell className='text-center'>
+                      {dcwr.items.reduce((sum, item) => sum + (item.arrivedQuantity || 0), 0)}
+                    </TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
+                </TableFooter>
               </Table>
             </CardContent>
           </Card>
