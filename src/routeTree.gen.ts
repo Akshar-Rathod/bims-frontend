@@ -48,6 +48,7 @@ import { Route as AuthenticatedSettingsAppearanceRouteImport } from './routes/_a
 import { Route as AuthenticatedSettingsAccountRouteImport } from './routes/_authenticated/settings/account'
 import { Route as AuthenticatedErrorsErrorRouteImport } from './routes/_authenticated/errors/$error'
 import { Route as AuthenticatedDcwrVerifiedRouteImport } from './routes/_authenticated/dcwr.verified'
+import { Route as AuthenticatedDcwrUnverifiedPrintRouteImport } from './routes/_authenticated/dcwr.unverified-print'
 import { Route as AuthenticatedDcwrUnverifiedRouteImport } from './routes/_authenticated/dcwr.unverified'
 import { Route as AuthenticatedDcwrFormRouteImport } from './routes/_authenticated/dcwr.form'
 import { Route as AuthenticatedDcwrVerifyIdRouteImport } from './routes/_authenticated/dcwr.verify.$id'
@@ -264,6 +265,12 @@ const AuthenticatedDcwrVerifiedRoute =
     path: '/dcwr/verified',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedDcwrUnverifiedPrintRoute =
+  AuthenticatedDcwrUnverifiedPrintRouteImport.update({
+    id: '/dcwr/unverified-print',
+    path: '/dcwr/unverified-print',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedDcwrUnverifiedRoute =
   AuthenticatedDcwrUnverifiedRouteImport.update({
     id: '/dcwr/unverified',
@@ -323,6 +330,7 @@ export interface FileRoutesByFullPath {
   '/bills-assigned': typeof AuthenticatedBillsAssignedRoute
   '/dcwr/form': typeof AuthenticatedDcwrFormRoute
   '/dcwr/unverified': typeof AuthenticatedDcwrUnverifiedRoute
+  '/dcwr/unverified-print': typeof AuthenticatedDcwrUnverifiedPrintRoute
   '/dcwr/verified': typeof AuthenticatedDcwrVerifiedRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
@@ -366,6 +374,7 @@ export interface FileRoutesByTo {
   '/': typeof AuthenticatedIndexRoute
   '/dcwr/form': typeof AuthenticatedDcwrFormRoute
   '/dcwr/unverified': typeof AuthenticatedDcwrUnverifiedRoute
+  '/dcwr/unverified-print': typeof AuthenticatedDcwrUnverifiedPrintRoute
   '/dcwr/verified': typeof AuthenticatedDcwrVerifiedRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
@@ -414,6 +423,7 @@ export interface FileRoutesById {
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/dcwr/form': typeof AuthenticatedDcwrFormRoute
   '/_authenticated/dcwr/unverified': typeof AuthenticatedDcwrUnverifiedRoute
+  '/_authenticated/dcwr/unverified-print': typeof AuthenticatedDcwrUnverifiedPrintRoute
   '/_authenticated/dcwr/verified': typeof AuthenticatedDcwrVerifiedRoute
   '/_authenticated/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/_authenticated/settings/account': typeof AuthenticatedSettingsAccountRoute
@@ -460,6 +470,7 @@ export interface FileRouteTypes {
     | '/bills-assigned'
     | '/dcwr/form'
     | '/dcwr/unverified'
+    | '/dcwr/unverified-print'
     | '/dcwr/verified'
     | '/errors/$error'
     | '/settings/account'
@@ -503,6 +514,7 @@ export interface FileRouteTypes {
     | '/'
     | '/dcwr/form'
     | '/dcwr/unverified'
+    | '/dcwr/unverified-print'
     | '/dcwr/verified'
     | '/errors/$error'
     | '/settings/account'
@@ -550,6 +562,7 @@ export interface FileRouteTypes {
     | '/_authenticated/'
     | '/_authenticated/dcwr/form'
     | '/_authenticated/dcwr/unverified'
+    | '/_authenticated/dcwr/unverified-print'
     | '/_authenticated/dcwr/verified'
     | '/_authenticated/errors/$error'
     | '/_authenticated/settings/account'
@@ -861,6 +874,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDcwrVerifiedRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/dcwr/unverified-print': {
+      id: '/_authenticated/dcwr/unverified-print'
+      path: '/dcwr/unverified-print'
+      fullPath: '/dcwr/unverified-print'
+      preLoaderRoute: typeof AuthenticatedDcwrUnverifiedPrintRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/dcwr/unverified': {
       id: '/_authenticated/dcwr/unverified'
       path: '/dcwr/unverified'
@@ -942,6 +962,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedDcwrFormRoute: typeof AuthenticatedDcwrFormRoute
   AuthenticatedDcwrUnverifiedRoute: typeof AuthenticatedDcwrUnverifiedRoute
+  AuthenticatedDcwrUnverifiedPrintRoute: typeof AuthenticatedDcwrUnverifiedPrintRoute
   AuthenticatedDcwrVerifiedRoute: typeof AuthenticatedDcwrVerifiedRoute
   AuthenticatedErrorsErrorRoute: typeof AuthenticatedErrorsErrorRoute
   AuthenticatedAppsIndexRoute: typeof AuthenticatedAppsIndexRoute
@@ -968,6 +989,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedDcwrFormRoute: AuthenticatedDcwrFormRoute,
   AuthenticatedDcwrUnverifiedRoute: AuthenticatedDcwrUnverifiedRoute,
+  AuthenticatedDcwrUnverifiedPrintRoute: AuthenticatedDcwrUnverifiedPrintRoute,
   AuthenticatedDcwrVerifiedRoute: AuthenticatedDcwrVerifiedRoute,
   AuthenticatedErrorsErrorRoute: AuthenticatedErrorsErrorRoute,
   AuthenticatedAppsIndexRoute: AuthenticatedAppsIndexRoute,
